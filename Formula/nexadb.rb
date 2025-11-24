@@ -12,9 +12,12 @@ class Nexadb < Formula
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
   # Python 3.8+ required
-  depends_on "python@3.11"
+  depends_on "python@3"
 
   def install
+    # Use system Python3 (works with any version)
+    python3 = which("python3")
+
     # Install Python files
     libexec.install Dir["*.py"]
     libexec.install Dir["*.html"]
@@ -25,12 +28,12 @@ class Nexadb < Formula
     # Create wrapper scripts
     (bin/"nexadb-server").write <<~EOS
       #!/bin/bash
-      PYTHONPATH="#{libexec}" exec "#{Formula["python@3.11"].opt_bin}/python3" "#{libexec}/nexadb_server.py" "$@"
+      PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
     EOS
 
     (bin/"nexadb-admin").write <<~EOS
       #!/bin/bash
-      PYTHONPATH="#{libexec}" exec "#{Formula["python@3.11"].opt_bin}/python3" "#{libexec}/nexadb_admin_server.py" "$@"
+      PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
     EOS
 
     # Main nexadb command
@@ -40,11 +43,11 @@ class Nexadb < Formula
       case "$1" in
         start|server)
           shift
-          PYTHONPATH="#{libexec}" exec "#{Formula["python@3.11"].opt_bin}/python3" "#{libexec}/nexadb_server.py" "$@"
+          PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
           ;;
         admin|ui)
           shift
-          PYTHONPATH="#{libexec}" exec "#{Formula["python@3.11"].opt_bin}/python3" "#{libexec}/nexadb_admin_server.py" "$@"
+          PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
           ;;
         --version|-v)
           echo "NexaDB v#{version}"
@@ -69,7 +72,7 @@ Examples:
   nexadb-server --port 8080       # Custom port
   nexadb-admin --host 0.0.0.0     # Bind to all interfaces
 
-Learn more: https://github.com/yourusername/nexadb
+Learn more: https://github.com/krishcdbry/nexadb
 HELP
           ;;
       esac
@@ -96,8 +99,8 @@ HELP
         nexadb --help       Show all commands
 
       Documentation:
-        Homepage: https://github.com/yourusername/nexadb
-        Docs:     https://github.com/yourusername/nexadb#readme
+        Homepage: https://github.com/krishcdbry/nexadb
+        Docs:     https://github.com/krishcdbry/nexadb#readme
 
       Connect from your app:
         npm install nexadb-client
