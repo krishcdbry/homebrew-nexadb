@@ -30,30 +30,32 @@ class Nexadb < Formula
       #!/bin/bash
       PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
     EOS
+    (bin/"nexadb-server").chmod 0755
 
     (bin/"nexadb-admin").write <<~EOS
       #!/bin/bash
       PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
     EOS
+    (bin/"nexadb-admin").chmod 0755
 
     # Main nexadb command
     (bin/"nexadb").write <<~EOS
-      #!/bin/bash
+#!/bin/bash
 
-      case "$1" in
-        start|server)
-          shift
-          PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
-          ;;
-        admin|ui)
-          shift
-          PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
-          ;;
-        --version|-v)
-          echo "NexaDB v#{version}"
-          ;;
-        --help|-h|help|*)
-          cat <<HELP
+case "$1" in
+  start|server)
+    shift
+    PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
+    ;;
+  admin|ui)
+    shift
+    PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
+    ;;
+  --version|-v)
+    echo "NexaDB v#{version}"
+    ;;
+  --help|-h|help|*)
+    cat <<HELP
 NexaDB - The database for quick apps
 
 Usage:
@@ -74,14 +76,10 @@ Examples:
 
 Learn more: https://github.com/krishcdbry/nexadb
 HELP
-          ;;
-      esac
+    ;;
+esac
     EOS
-
-    # Make scripts executable
     (bin/"nexadb").chmod 0755
-    (bin/"nexadb-server").chmod 0755
-    (bin/"nexadb-admin").chmod 0755
   end
 
   def post_install
