@@ -79,9 +79,9 @@ HELP
     EOS
 
     # Make scripts executable
-    chmod 0755, bin/"nexadb"
-    chmod 0755, bin/"nexadb-server"
-    chmod 0755, bin/"nexadb-admin"
+    (bin/"nexadb").chmod 0755
+    (bin/"nexadb-server").chmod 0755
+    (bin/"nexadb-admin").chmod 0755
   end
 
   def post_install
