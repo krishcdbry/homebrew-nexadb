@@ -4,10 +4,10 @@
 class Nexadb < Formula
   include Language::Python::Virtualenv
 
-  desc "Zero-dependency LSM-Tree database with vector search - The database for quick apps"
+  desc "Zero-dependency LSM-Tree database with TOON format support - The database for quick apps"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "5058886298767c3130c084aaa82bdeb2fc2c867160175960b83753c1a94680f6"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.1.0.tar.gz"
+  sha256 "3bbb109f6c5021b911ae90ebb2a6460652700ca482d58dc90f48dc0de6c28b3d"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -107,18 +107,23 @@ esac
 
   def caveats
     <<~EOS
-      🎉 NexaDB installed successfully!
+      🎉 NexaDB v1.1.0 installed successfully!
+
+      ⚡️ NEW: TOON Format Support
+        Reduce LLM token usage by 40-50%!
+        Save $400-$500 per million API calls.
 
       Quick Start (run in new terminal or source your shell config):
-        nexadb start        Start database server
-        nexadb admin        Start admin UI
+        nexadb start        Start database server (port 6969)
+        nexadb admin        Start admin UI (port 9999)
 
       If 'nexadb' command not found, run:
         source ~/.zshrc     (or source ~/.bash_profile)
 
       Or simply open a new terminal window.
 
-      Documentation: https://github.com/krishcdbry/nexadb
+      Documentation: https://nexadb.io
+      GitHub: https://github.com/krishcdbry/nexadb
 
       Happy building! 🚀
     EOS
