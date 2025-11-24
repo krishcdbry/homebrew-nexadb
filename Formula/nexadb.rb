@@ -84,27 +84,43 @@ HELP
     chmod 0755, bin/"nexadb-admin"
   end
 
+  def post_install
+    # Auto-add Homebrew to PATH if not already present
+    shell_rc = if ENV["SHELL"]&.include?("zsh")
+      "#{ENV["HOME"]}/.zshrc"
+    else
+      "#{ENV["HOME"]}/.bash_profile"
+    end
+
+    homebrew_path = "export PATH=\"#{HOMEBREW_PREFIX}/bin:$PATH\""
+
+    if File.exist?(shell_rc)
+      content = File.read(shell_rc)
+      unless content.include?("#{HOMEBREW_PREFIX}/bin")
+        File.open(shell_rc, "a") do |f|
+          f.puts "\n# Added by NexaDB"
+          f.puts homebrew_path
+        end
+        ohai "Added Homebrew to PATH in #{shell_rc}"
+        ohai "Run: source #{shell_rc}"
+      end
+    end
+  end
+
   def caveats
     <<~EOS
       🎉 NexaDB installed successfully!
 
-      Quick Start:
-        1. Start database:  nexadb start
-        2. Start admin UI:  nexadb admin
-        3. Open browser:    http://localhost:9999
+      Quick Start (run in new terminal or source your shell config):
+        nexadb start        Start database server
+        nexadb admin        Start admin UI
 
-      Commands:
-        nexadb start        Start database server (port 6969)
-        nexadb admin        Start admin UI (port 9999)
-        nexadb --help       Show all commands
+      If 'nexadb' command not found, run:
+        source ~/.zshrc     (or source ~/.bash_profile)
 
-      Documentation:
-        Homepage: https://github.com/krishcdbry/nexadb
-        Docs:     https://github.com/krishcdbry/nexadb#readme
+      Or simply open a new terminal window.
 
-      Connect from your app:
-        npm install nexadb-client
-        pip install nexadb-client
+      Documentation: https://github.com/krishcdbry/nexadb
 
       Happy building! 🚀
     EOS
