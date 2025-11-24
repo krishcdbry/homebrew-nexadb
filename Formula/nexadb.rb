@@ -7,7 +7,7 @@ class Nexadb < Formula
   desc "Zero-dependency LSM-Tree database with vector search - The database for quick apps"
   homepage "https://github.com/krishcdbry/nexadb"
   url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.0.0.tar.gz"
-  sha256 "YOUR_SHA256_HASH_HERE"  # Generate after creating release
+  sha256 "5058886298767c3130c084aaa82bdeb2fc2c867160175960b83753c1a94680f6"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -69,7 +69,7 @@ Examples:
   nexadb-server --port 8080       # Custom port
   nexadb-admin --host 0.0.0.0     # Bind to all interfaces
 
-Learn more: https://github.com/krishcdbry/nexadb
+Learn more: https://github.com/yourusername/nexadb
 HELP
           ;;
       esac
@@ -96,8 +96,8 @@ HELP
         nexadb --help       Show all commands
 
       Documentation:
-        Homepage: https://github.com/krishcdbry/nexadb
-        Docs:     https://github.com/krishcdbry/nexadb#readme
+        Homepage: https://github.com/yourusername/nexadb
+        Docs:     https://github.com/yourusername/nexadb#readme
 
       Connect from your app:
         npm install nexadb-client
