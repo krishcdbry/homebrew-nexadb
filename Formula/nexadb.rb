@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with enterprise security, HNSW vector search, and 200x performance"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.3.5.tar.gz"
-  sha256 "44bd2c359cde4eb07931c7de84dbced701b074289ae002ab75551c1da1956375"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.3.6.tar.gz"
+  sha256 "29ecc5c69d0006b16ddd7597aec2fbd3cba717f66947a00748fb4a7d687eb9cb"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -97,22 +97,27 @@ case "$1" in
 NexaDB - The database for quick apps
 
 Usage:
-  nexadb start              Start database server (port 6969)
-  nexadb admin              Start admin UI (port 9999)
+  nexadb start              Start all services (Binary + REST + Admin)
+  nexadb admin              Start admin UI only (port 9999)
   nexadb reset-password     Reset root password to default
   nexadb --version          Show version
   nexadb --help             Show this help
+
+Services (when running 'nexadb start'):
+  Binary Protocol           Port 6970 (10x faster!)
+  JSON REST API             Port 6969 (REST fallback)
+  Admin Web UI              Port 9999 (Web interface)
 
 Commands:
   nexadb-server             Start database server
   nexadb-admin              Start admin UI
 
 Examples:
-  nexadb start                         # Start server
-  nexadb admin                         # Start admin UI
+  nexadb start                         # Start all services
+  nexadb admin                         # Start admin UI only
   nexadb reset-password                # Reset root password to default
   nexadb reset-password --password foo # Reset to custom password
-  nexadb-server --port 8080            # Custom port
+  nexadb-server --port 8080            # Custom port (REST only)
   nexadb-admin --host 0.0.0.0          # Bind to all interfaces
 
 Password Reset:
@@ -174,7 +179,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v1.3.5#{cyan}                                          ║
+      ║                     #{green}v1.3.6#{cyan}                                          ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
@@ -182,13 +187,13 @@ esac
       #{green}#{bold}✓ Installation Complete!#{reset}
 
       #{yellow}#{bold}🚀 QUICK START#{reset}
-         #{white}Start the database server:#{reset}
+         #{white}Start NexaDB (all services):#{reset}
          #{cyan}$ nexadb start#{reset}
 
-         #{white}Open the admin panel:#{reset}
-         #{cyan}$ nexadb admin#{reset}
-
-         #{white}Then visit:#{reset} #{green}http://localhost:9999/admin_panel/#{reset}
+         #{white}This starts:#{reset}
+         #{green}✓#{reset} Binary Protocol (port 6970) - 10x faster!
+         #{green}✓#{reset} JSON API (port 6969) - REST fallback
+         #{green}✓#{reset} Admin UI (port 9999) - Web interface
 
       #{magenta}#{bold}🔐 DEFAULT CREDENTIALS#{reset}
          #{white}Username:#{reset} #{green}root#{reset}
@@ -204,8 +209,8 @@ esac
          #{green}✓#{reset} 20K reads/sec, <1ms lookups
 
       #{yellow}#{bold}📚 USEFUL COMMANDS#{reset}
-         #{white}Start server:#{reset}        #{cyan}nexadb start#{reset}
-         #{white}Start admin UI:#{reset}      #{cyan}nexadb admin#{reset}
+         #{white}Start all services:#{reset}  #{cyan}nexadb start#{reset} #{white}(Binary + REST + Admin)#{reset}
+         #{white}Admin UI only:#{reset}       #{cyan}nexadb admin#{reset}
          #{white}Reset password:#{reset}      #{cyan}nexadb reset-password#{reset}
          #{white}Show help:#{reset}           #{cyan}nexadb --help#{reset}
 
