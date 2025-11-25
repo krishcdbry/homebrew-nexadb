@@ -21,8 +21,8 @@ class Nexadb < Formula
   end
 
   def install
-    # Create virtualenv with system Python
-    virtualenv_install_with_resources
+    # Create virtualenv with Python 3
+    virtualenv_install_with_resources using: "python@3"
 
     # Install Python files
     libexec.install Dir["*.py"]
