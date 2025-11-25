@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with enterprise security, HNSW vector search, and 200x performance"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.2.0.tar.gz"
-  sha256 "b6f762bc9d1146d0532159f55b2d6333e079a4a425176bf6426519e089077c19"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v1.3.0.tar.gz"
+  sha256 "a27e9201b1072cef40306e3eeddf1d09e7c2ce1ddffc4e3dadc7d6d5924d41c6"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -22,6 +22,11 @@ class Nexadb < Formula
     libexec.install Dir["*.py"]
     libexec.install Dir["*.html"]
 
+    # Install password reset utility
+    if buildpath.join("reset_root_password.py").exist?
+      libexec.install "reset_root_password.py"
+    end
+
     # Create bin directory
     bin.mkpath
 
@@ -34,7 +39,7 @@ class Nexadb < Formula
 
     (bin/"nexadb-admin").write <<~EOS
       #!/bin/bash
-      PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
+      PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/admin_server.py" "$@"
     EOS
     (bin/"nexadb-admin").chmod 0755
 
@@ -49,7 +54,24 @@ case "$1" in
     ;;
   admin|ui)
     shift
-    PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_admin_server.py" "$@"
+    PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/admin_server.py" "$@"
+    ;;
+  reset-password)
+    shift
+    # Find data directory
+    DATA_DIR="./nexadb_data"
+    if [ ! -d "$DATA_DIR" ]; then
+      DATA_DIR="#{var}/nexadb"
+    fi
+    if [ ! -d "$DATA_DIR" ]; then
+      DATA_DIR="/opt/homebrew/var/nexadb"
+    fi
+    if [ ! -d "$DATA_DIR" ]; then
+      DATA_DIR="/usr/local/var/nexadb"
+    fi
+
+    # Run password reset
+    PYTHONPATH="#{libexec}" "#{python3}" "#{libexec}/reset_root_password.py" --data-dir "$DATA_DIR" "$@"
     ;;
   --version|-v)
     echo "NexaDB v#{version}"
@@ -59,20 +81,29 @@ case "$1" in
 NexaDB - The database for quick apps
 
 Usage:
-  nexadb start          Start database server (port 6969)
-  nexadb admin          Start admin UI (port 9999)
-  nexadb --version      Show version
-  nexadb --help         Show this help
+  nexadb start              Start database server (port 6969)
+  nexadb admin              Start admin UI (port 9999)
+  nexadb reset-password     Reset root password to default
+  nexadb --version          Show version
+  nexadb --help             Show this help
 
 Commands:
-  nexadb-server         Start database server
-  nexadb-admin          Start admin UI
+  nexadb-server             Start database server
+  nexadb-admin              Start admin UI
 
 Examples:
-  nexadb start                    # Start server
-  nexadb admin                    # Start admin UI
-  nexadb-server --port 8080       # Custom port
-  nexadb-admin --host 0.0.0.0     # Bind to all interfaces
+  nexadb start                         # Start server
+  nexadb admin                         # Start admin UI
+  nexadb reset-password                # Reset root password to default
+  nexadb reset-password --password foo # Reset to custom password
+  nexadb-server --port 8080            # Custom port
+  nexadb-admin --host 0.0.0.0          # Bind to all interfaces
+
+Password Reset:
+  If you forget your root password, simply run:
+    nexadb reset-password
+
+  This will reset it to the default (nexadb123) without losing any data.
 
 Learn more: https://github.com/krishcdbry/nexadb
 HELP
@@ -106,29 +137,76 @@ esac
   end
 
   def caveats
+    # ANSI color codes for terminal
+    cyan = "\033[96m"
+    green = "\033[92m"
+    yellow = "\033[93m"
+    magenta = "\033[95m"
+    bold = "\033[1m"
+    reset = "\033[0m"
+    white = "\033[97m"
+
     <<~EOS
-      🚀 NexaDB v1.2.0 installed successfully!
+      #{cyan}#{bold}
+      ╔═══════════════════════════════════════════════════════════════════════╗
+      ║                                                                       ║
+      ║     ███╗   ██╗███████╗██╗  ██╗ █████╗ ██████╗ ██████╗               ║
+      ║     ████╗  ██║██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔══██╗              ║
+      ║     ██╔██╗ ██║█████╗   ╚███╔╝ ███████║██║  ██║██████╔╝              ║
+      ║     ██║╚██╗██║██╔══╝   ██╔██╗ ██╔══██║██║  ██║██╔══██╗              ║
+      ║     ██║ ╚████║███████╗██╔╝ ██╗██║  ██║██████╔╝██████╔╝              ║
+      ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
+      ║                                                                       ║
+      ║            #{white}Production-Grade AI Database#{cyan}                            ║
+      ║                     #{green}v1.3.0#{cyan}                                          ║
+      ║                                                                       ║
+      ╚═══════════════════════════════════════════════════════════════════════╝
+      #{reset}
 
-      ✨ NEW in v1.2.0 - Production-Grade AI Database:
-        🔒 Enterprise Security (AES-256-GCM, RBAC, audit logging)
-        ⚡ Advanced Indexing (B-Tree, Hash, HNSW, Full-text)
-        🎯 200x faster vector search with HNSW algorithm
-        💰 40-50% LLM cost savings with TOON format
-        📊 20K reads/sec, <1ms lookups, 1M+ documents
+      #{green}#{bold}✓ Installation Complete!#{reset}
 
-      Quick Start (run in new terminal or source your shell config):
-        nexadb start        Start database server (port 6969)
-        nexadb admin        Start admin UI (port 9999)
+      #{yellow}#{bold}🚀 QUICK START#{reset}
+         #{white}Start the database server:#{reset}
+         #{cyan}$ nexadb start#{reset}
 
-      If 'nexadb' command not found, run:
-        source ~/.zshrc     (or source ~/.bash_profile)
+         #{white}Open the admin panel:#{reset}
+         #{cyan}$ nexadb admin#{reset}
 
-      Or simply open a new terminal window.
+         #{white}Then visit:#{reset} #{green}http://localhost:9999/admin_panel/#{reset}
 
-      Documentation: https://github.com/krishcdbry/nexadb
-      Website: https://nexadb.io
+      #{magenta}#{bold}🔐 DEFAULT CREDENTIALS#{reset}
+         #{white}Username:#{reset} #{green}root#{reset}
+         #{white}Password:#{reset} #{green}nexadb123#{reset}
 
-      Happy building! 🚀
+         #{yellow}⚠️  IMPORTANT: Change password after first login!#{reset}
+
+      #{cyan}#{bold}✨ KEY FEATURES#{reset}
+         #{green}✓#{reset} HNSW Vector Search (200x faster)
+         #{green}✓#{reset} Enterprise Security (AES-256-GCM, RBAC)
+         #{green}✓#{reset} Advanced Indexing (B-Tree, Hash, Full-text)
+         #{green}✓#{reset} TOON Format (40-50% LLM cost savings)
+         #{green}✓#{reset} 20K reads/sec, <1ms lookups
+
+      #{yellow}#{bold}📚 USEFUL COMMANDS#{reset}
+         #{white}Start server:#{reset}        #{cyan}nexadb start#{reset}
+         #{white}Start admin UI:#{reset}      #{cyan}nexadb admin#{reset}
+         #{white}Reset password:#{reset}      #{cyan}nexadb reset-password#{reset}
+         #{white}Show help:#{reset}           #{cyan}nexadb --help#{reset}
+
+      #{yellow}#{bold}💡 TROUBLESHOOTING#{reset}
+         #{white}If 'nexadb' command not found:#{reset}
+         #{cyan}$ source ~/.zshrc#{reset}  (or ~/.bash_profile)
+
+         #{white}Or simply open a new terminal window.#{reset}
+
+      #{yellow}#{bold}🔗 RESOURCES#{reset}
+         #{white}Documentation:#{reset} #{cyan}https://github.com/krishcdbry/nexadb#{reset}
+         #{white}Website:#{reset}       #{cyan}https://nexadb.io#{reset}
+
+      #{white}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━#{reset}
+      #{green}#{bold}   🎉 Ready to build! Run 'nexadb start' to begin   #{reset}
+      #{white}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━#{reset}
+
     EOS
   end
 
