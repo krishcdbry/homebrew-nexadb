@@ -43,13 +43,19 @@ class Nexadb < Formula
     # Create wrapper scripts using virtualenv Python
     (bin/"nexadb-server").write <<~EOS
       #!/bin/bash
-      exec "#{libexec}/bin/python" "#{libexec}/nexadb_server.py" "$@"
+      # Use consistent default data directory
+      DATA_DIR="${DATA_DIR:-#{var}/nexadb}"
+      mkdir -p "$DATA_DIR"
+      exec "#{libexec}/bin/python" "#{libexec}/nexadb_server.py" --data-dir "$DATA_DIR" "$@"
     EOS
     (bin/"nexadb-server").chmod 0755
 
     (bin/"nexadb-admin").write <<~EOS
       #!/bin/bash
-      exec "#{libexec}/bin/python" "#{libexec}/admin_server.py" "$@"
+      # Use consistent default data directory
+      DATA_DIR="${DATA_DIR:-#{var}/nexadb}"
+      mkdir -p "$DATA_DIR"
+      exec "#{libexec}/bin/python" "#{libexec}/admin_server.py" --data-dir "$DATA_DIR" "$@"
     EOS
     (bin/"nexadb-admin").chmod 0755
 
