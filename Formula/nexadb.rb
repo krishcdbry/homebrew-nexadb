@@ -14,9 +14,15 @@ class Nexadb < Formula
   # Python 3.8+ required
   depends_on "python@3"
 
+  # Python dependencies
+  resource "msgpack" do
+    url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
+    sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
+  end
+
   def install
-    # Use system Python3 (works with any version)
-    python3 = which("python3")
+    # Create virtualenv with system Python
+    virtualenv_install_with_resources
 
     # Install Python files
     libexec.install Dir["*.py"]
@@ -30,16 +36,16 @@ class Nexadb < Formula
     # Create bin directory
     bin.mkpath
 
-    # Create wrapper scripts
+    # Create wrapper scripts using virtualenv Python
     (bin/"nexadb-server").write <<~EOS
       #!/bin/bash
-      PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
+      exec "#{libexec}/bin/python" "#{libexec}/nexadb_server.py" "$@"
     EOS
     (bin/"nexadb-server").chmod 0755
 
     (bin/"nexadb-admin").write <<~EOS
       #!/bin/bash
-      PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/admin_server.py" "$@"
+      exec "#{libexec}/bin/python" "#{libexec}/admin_server.py" "$@"
     EOS
     (bin/"nexadb-admin").chmod 0755
 
@@ -50,11 +56,11 @@ class Nexadb < Formula
 case "$1" in
   start|server)
     shift
-    PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/nexadb_server.py" "$@"
+    exec "#{libexec}/bin/python" "#{libexec}/nexadb_server.py" "$@"
     ;;
   admin|ui)
     shift
-    PYTHONPATH="#{libexec}" exec "#{python3}" "#{libexec}/admin_server.py" "$@"
+    exec "#{libexec}/bin/python" "#{libexec}/admin_server.py" "$@"
     ;;
   reset-password)
     shift
@@ -71,7 +77,7 @@ case "$1" in
     fi
 
     # Run password reset
-    PYTHONPATH="#{libexec}" "#{python3}" "#{libexec}/reset_root_password.py" --data-dir "$DATA_DIR" "$@"
+    "#{libexec}/bin/python" "#{libexec}/reset_root_password.py" --data-dir "$DATA_DIR" "$@"
     ;;
   --version|-v)
     echo "NexaDB v#{version}"
