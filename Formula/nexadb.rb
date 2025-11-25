@@ -29,7 +29,11 @@ class Nexadb < Formula
 
     # Install Python files
     libexec.install Dir["*.py"]
-    libexec.install Dir["*.html"]
+
+    # Install admin panel directory
+    if buildpath.join("admin_panel").exist?
+      libexec.install "admin_panel"
+    end
 
     # Install password reset utility
     if buildpath.join("reset_root_password.py").exist?
