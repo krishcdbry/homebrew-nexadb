@@ -21,8 +21,11 @@ class Nexadb < Formula
   end
 
   def install
-    # Create virtualenv with Python 3
-    virtualenv_install_with_resources using: "python@3"
+    # Create virtualenv
+    venv = virtualenv_create(libexec, "python3")
+
+    # Install msgpack into virtualenv
+    venv.pip_install resources
 
     # Install Python files
     libexec.install Dir["*.py"]
@@ -32,9 +35,6 @@ class Nexadb < Formula
     if buildpath.join("reset_root_password.py").exist?
       libexec.install "reset_root_password.py"
     end
-
-    # Create bin directory
-    bin.mkpath
 
     # Create wrapper scripts using virtualenv Python
     (bin/"nexadb-server").write <<~EOS
