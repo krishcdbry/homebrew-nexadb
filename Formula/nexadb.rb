@@ -60,11 +60,17 @@ class Nexadb < Formula
 case "$1" in
   start|server)
     shift
-    exec "#{libexec}/bin/python" "#{libexec}/nexadb_server.py" "$@"
+    # Use consistent data directory
+    DATA_DIR="${DATA_DIR:-#{var}/nexadb}"
+    mkdir -p "$DATA_DIR"
+    exec "#{libexec}/bin/python" "#{libexec}/nexadb_server.py" --data-dir "$DATA_DIR" "$@"
     ;;
   admin|ui)
     shift
-    exec "#{libexec}/bin/python" "#{libexec}/admin_server.py" "$@"
+    # Use consistent data directory
+    DATA_DIR="${DATA_DIR:-#{var}/nexadb}"
+    mkdir -p "$DATA_DIR"
+    exec "#{libexec}/bin/python" "#{libexec}/admin_server.py" --data-dir "$DATA_DIR" "$@"
     ;;
   reset-password)
     shift
