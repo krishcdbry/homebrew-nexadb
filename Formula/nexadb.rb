@@ -140,13 +140,7 @@ esac
     (bin/"nexadb").chmod 0755
 
     # Download nexa CLI binary (interactive terminal)
-    # Detect architecture and download the appropriate binary
-    arch = Hardware::CPU.arch
-    nexa_url = if arch == :arm64
-      "https://github.com/krishcdbry/nexadb/releases/latest/download/nexa-aarch64-apple-darwin"
-    else
-      "https://github.com/krishcdbry/nexadb/releases/latest/download/nexa-x86_64-apple-darwin"
-    end
+    nexa_url = "https://github.com/krishcdbry/nexadb/releases/download/cli-v2.0.0/nexa"
 
     # Download nexa binary
     ohai "Downloading nexa CLI (interactive terminal)..."
