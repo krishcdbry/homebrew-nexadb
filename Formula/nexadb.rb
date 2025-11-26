@@ -138,6 +138,21 @@ HELP
 esac
     EOS
     (bin/"nexadb").chmod 0755
+
+    # Download nexa CLI binary (interactive terminal)
+    # Detect architecture and download the appropriate binary
+    arch = Hardware::CPU.arch
+    nexa_url = if arch == :arm64
+      "https://github.com/krishcdbry/nexadb/releases/latest/download/nexa-aarch64-apple-darwin"
+    else
+      "https://github.com/krishcdbry/nexadb/releases/latest/download/nexa-x86_64-apple-darwin"
+    end
+
+    # Download nexa binary
+    ohai "Downloading nexa CLI (interactive terminal)..."
+    system "curl", "-fsSL", nexa_url, "-o", "#{bin}/nexa"
+    (bin/"nexa").chmod 0755
+    ohai "nexa CLI installed successfully"
   end
 
   def post_install
@@ -216,6 +231,7 @@ esac
 
       #{yellow}#{bold}📚 USEFUL COMMANDS#{reset}
          #{white}Start all services:#{reset}  #{cyan}nexadb start#{reset} #{white}(Binary + REST + Admin)#{reset}
+         #{white}Interactive CLI:#{reset}     #{cyan}nexa -u root -p#{reset} #{white}(MySQL-like terminal)#{reset}
          #{white}Admin UI only:#{reset}       #{cyan}nexadb admin#{reset}
          #{white}Reset password:#{reset}      #{cyan}nexadb reset-password#{reset}
          #{white}Show help:#{reset}           #{cyan}nexadb --help#{reset}
