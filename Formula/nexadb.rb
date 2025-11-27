@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.1.0.tar.gz"
-  sha256 "b4bd200b5b017d53d4cab74f7eeac191b08f201e1d6b68dd50d3c19c9d1c02e5"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.2.0.tar.gz"
+  sha256 "8a7c781baa9d6c5b8d49a2e9b537448733732f0c5161c26916366e8d8ab0e629"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -143,9 +143,9 @@ esac
     # Detect architecture and download the appropriate binary
     arch = Hardware::CPU.arch
     nexa_url = if arch == :arm64
-      "https://github.com/krishcdbry/nexadb/releases/download/cli-v2.1.0/nexa-aarch64-apple-darwin"
+      "https://github.com/krishcdbry/nexadb/releases/download/cli-v2.2.0/nexa-aarch64-apple-darwin"
     else
-      "https://github.com/krishcdbry/nexadb/releases/download/cli-v2.1.0/nexa-x86_64-apple-darwin"
+      "https://github.com/krishcdbry/nexadb/releases/download/cli-v2.2.0/nexa-x86_64-apple-darwin"
     end
 
     # Download nexa binary
@@ -200,7 +200,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v2.1.0#{cyan}                                          ║
+      ║                     #{green}v2.2.0#{cyan}                                          ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
