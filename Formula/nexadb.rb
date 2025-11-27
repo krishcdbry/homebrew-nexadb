@@ -49,8 +49,20 @@ class Nexadb < Formula
     # Create virtualenv
     venv = virtualenv_create(libexec, "python3")
 
-    # Install msgpack into virtualenv
-    venv.pip_install resources
+    # Install Python dependencies with progress indicators
+    ohai "Installing Python dependencies (this may take a few minutes)..."
+    puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, numpy, xxhash, bitarray"
+    puts "⏳ Note: NumPy (20MB) may take 2-3 minutes to compile on some systems..."
+    puts ""
+
+    # Install dependencies individually with progress messages
+    resources.each_with_index do |resource, index|
+      ohai "📥 [#{index + 1}/#{resources.count}] Installing #{resource.name}..."
+      venv.pip_install resource
+    end
+
+    puts ""
+    ohai "✅ All dependencies installed successfully!"
 
     # Install Python files
     libexec.install Dir["*.py"]
