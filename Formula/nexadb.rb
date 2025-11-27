@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.2.9.tar.gz"
-  sha256 "2b713c96b224c12d5579ae317644ea63ee4467c069a277fbfe8d881d238b91b6"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.2.10.tar.gz"
+  sha256 "fd2c3d32743778b1a5ccb11711ea122fccf5208351a99ed498190b11bdaf9bf1"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -18,6 +18,21 @@ class Nexadb < Formula
   resource "msgpack" do
     url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
     sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
+  end
+
+  resource "sortedcontainers" do
+    url "https://files.pythonhosted.org/packages/e8/c4/ba2f8066cceb6f23394729afe52f3bf7adec04bf9ed2c820b39e19299111/sortedcontainers-2.4.0.tar.gz"
+    sha256 "25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"
+  end
+
+  resource "pybloom_live" do
+    url "https://files.pythonhosted.org/packages/8c/06/868053bdca7afcc22905d6fa5f515880c31cbb12437aea1814c26cdd1c92/pybloom_live-4.0.0.tar.gz"
+    sha256 "99545c5d3b05bd388b5491e36b823b706830a686ba18b4c19063d08de5321110"
+  end
+
+  resource "numpy" do
+    url "https://files.pythonhosted.org/packages/76/65/21b3bc86aac7b8f2862db1e808f1ea22b028e30a225a34a5ede9bf8678f2/numpy-2.3.5.tar.gz"
+    sha256 "784db1dcdab56bf0517743e746dfb0f885fc68d948aba86eeec2cba234bdf1c0"
   end
 
   def install
@@ -200,7 +215,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v2.2.9#{cyan}                                          ║
+      ║                     #{green}v2.2.10#{cyan}                                         ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
