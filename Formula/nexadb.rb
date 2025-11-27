@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.2.10.tar.gz"
-  sha256 "fd2c3d32743778b1a5ccb11711ea122fccf5208351a99ed498190b11bdaf9bf1"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.2.11.tar.gz"
+  sha256 "8df2ef53e6c29c2acda6c3deb3bfcfc2cbfdf4b64dd8e7c7e8cb0a62bfd699f1"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -33,6 +33,16 @@ class Nexadb < Formula
   resource "numpy" do
     url "https://files.pythonhosted.org/packages/76/65/21b3bc86aac7b8f2862db1e808f1ea22b028e30a225a34a5ede9bf8678f2/numpy-2.3.5.tar.gz"
     sha256 "784db1dcdab56bf0517743e746dfb0f885fc68d948aba86eeec2cba234bdf1c0"
+  end
+
+  resource "xxhash" do
+    url "https://files.pythonhosted.org/packages/02/84/30869e01909fb37a6cc7e18688ee8bf1e42d57e7e0777636bd47524c43c7/xxhash-3.6.0.tar.gz"
+    sha256 "f0162a78b13a0d7617b2845b90c763339d1f1d82bb04a4b07f4ab535cc5e05d6"
+  end
+
+  resource "bitarray" do
+    url "https://files.pythonhosted.org/packages/95/06/92fdc84448d324ab8434b78e65caf4fb4c6c90b4f8ad9bdd4c8021bfaf1e/bitarray-3.8.0.tar.gz"
+    sha256 "3eae38daffd77c9621ae80c16932eea3fb3a4af141fb7cc724d4ad93eff9210d"
   end
 
   def install
@@ -215,7 +225,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v2.2.10#{cyan}                                         ║
+      ║                     #{green}v2.2.11#{cyan}                                         ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
