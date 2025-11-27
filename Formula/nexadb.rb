@@ -7,7 +7,7 @@ class Nexadb < Formula
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
   url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.2.11.tar.gz"
-  sha256 "8df2ef53e6c29c2acda6c3deb3bfcfc2cbfdf4b64dd8e7c7e8cb0a62bfd699f1"
+  sha256 "d82a7e31edfab7367b860710cc6d922fda430b2fd85a9bd2014ba540bfec00d5"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
