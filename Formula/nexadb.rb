@@ -6,13 +6,14 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.2.tar.gz"
-  sha256 "4a91502262dba69f5517f71cd933719612c79389f3a7d7291141f7b945ec9e0d"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.3.tar.gz"
+  sha256 "bb46068954873d6f38b337008f9ab7d8b1ad6ad3c782a3dc24b73558ab3380bf"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
   # Python 3.8+ required
   depends_on "python@3"
+  depends_on "numpy"  # Pre-built bottle, fast install (required by pybloom_live)
 
   # Python dependencies
   resource "msgpack" do
@@ -30,11 +31,6 @@ class Nexadb < Formula
     sha256 "99545c5d3b05bd388b5491e36b823b706830a686ba18b4c19063d08de5321110"
   end
 
-  resource "numpy" do
-    url "https://files.pythonhosted.org/packages/76/65/21b3bc86aac7b8f2862db1e808f1ea22b028e30a225a34a5ede9bf8678f2/numpy-2.3.5.tar.gz"
-    sha256 "784db1dcdab56bf0517743e746dfb0f885fc68d948aba86eeec2cba234bdf1c0"
-  end
-
   resource "xxhash" do
     url "https://files.pythonhosted.org/packages/02/84/30869e01909fb37a6cc7e18688ee8bf1e42d57e7e0777636bd47524c43c7/xxhash-3.6.0.tar.gz"
     sha256 "f0162a78b13a0d7617b2845b90c763339d1f1d82bb04a4b07f4ab535cc5e05d6"
@@ -45,14 +41,19 @@ class Nexadb < Formula
     sha256 "3eae38daffd77c9621ae80c16932eea3fb3a4af141fb7cc724d4ad93eff9210d"
   end
 
-  def install
-    # Create virtualenv
-    venv = virtualenv_create(libexec, "python3")
+  # NexaClient - Python client for NexaDB (required by nexadb_server.py)
+  resource "nexaclient" do
+    url "https://files.pythonhosted.org/packages/67/a7/eee3c8c0e5c4f6909f2844792a19410a4d2c7fc673a6994ed7c6e0e15ddf/nexaclient-3.0.0.tar.gz"
+    sha256 "75efc6cf31f9623143a35d78ab7e4ad52aeeabcf872b781f9505cc4b8405be6a"
+  end
 
-    # Install Python dependencies with progress indicators
-    ohai "Installing Python dependencies (this may take a few minutes)..."
-    puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, numpy, xxhash, bitarray"
-    puts "⏳ Note: NumPy (20MB) may take 2-3 minutes to compile on some systems..."
+  def install
+    # Create virtualenv with access to Homebrew's numpy (pre-built, fast!)
+    venv = virtualenv_create(libexec, "python3", system_site_packages: true)
+
+    # Install Python dependencies
+    ohai "Installing Python dependencies..."
+    puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, xxhash, bitarray, nexaclient"
     puts ""
 
     # Install dependencies individually with progress messages
@@ -281,7 +282,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v3.0.2#{cyan}                                          ║
+      ║                     #{green}v3.0.3#{cyan}                                          ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
