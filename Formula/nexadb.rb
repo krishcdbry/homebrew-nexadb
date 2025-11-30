@@ -13,7 +13,6 @@ class Nexadb < Formula
 
   # Python 3.8+ required
   depends_on "python@3"
-  depends_on "numpy"  # Pre-built bottle, fast install (required by pybloom_live)
   depends_on xcode: :build  # Required for hnswlib C++ compilation
 
   # Python dependencies
@@ -55,12 +54,12 @@ class Nexadb < Formula
   end
 
   def install
-    # Create virtualenv with access to Homebrew's numpy (pre-built bottle, no compilation needed!)
-    # The depends_on "numpy" ensures numpy is available via system_site_packages
-    venv = virtualenv_create(libexec, "python3", system_site_packages: true)
+    # Create virtualenv
+    venv = virtualenv_create(libexec, "python3")
 
-    # Verify numpy is available from Homebrew (no pip install needed - uses pre-built bottle)
-    ohai "Using Homebrew's pre-built numpy (no compilation required)..."
+    # Install numpy first (pip automatically uses pre-built wheel - no compilation!)
+    ohai "Installing numpy (pre-built wheel)..."
+    system libexec/"bin/pip", "install", "numpy"
 
     # Install Python dependencies
     ohai "Installing Python dependencies..."
