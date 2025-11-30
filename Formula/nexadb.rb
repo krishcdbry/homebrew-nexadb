@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v2.3.1.tar.gz"
-  sha256 "0d357f97f23612d123c74900c5a94aabb539ad64d0d7fa0b2e5d8df1f45c9c90"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.1.tar.gz"
+  sha256 "84d867a5afa4356d7dfe68dede8d7c3f3805efd83391822dcde54bc648c1dbe8"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -132,6 +132,43 @@ case "$1" in
     # Run password reset
     "#{libexec}/bin/python" "#{libexec}/reset_root_password.py" --data-dir "$DATA_DIR" "$@"
     ;;
+  stop)
+    echo "Stopping NexaDB..."
+
+    STOPPED=0
+
+    # Stop Binary Protocol Server (port 6970)
+    if lsof -ti:6970 >/dev/null 2>&1; then
+      echo "  → Stopping Binary Protocol Server (port 6970)..."
+      lsof -ti:6970 | xargs kill -9 2>/dev/null || true
+      STOPPED=1
+    fi
+
+    # Stop REST API Server (port 6969)
+    if lsof -ti:6969 >/dev/null 2>&1; then
+      echo "  → Stopping REST API Server (port 6969)..."
+      lsof -ti:6969 | xargs kill -9 2>/dev/null || true
+      STOPPED=1
+    fi
+
+    # Stop Admin UI (port 9999)
+    if lsof -ti:9999 >/dev/null 2>&1; then
+      echo "  → Stopping Admin UI (port 9999)..."
+      lsof -ti:9999 | xargs kill -9 2>/dev/null || true
+      STOPPED=1
+    fi
+
+    # Also kill any nexadb server processes by name
+    if pkill -f "nexadb.*server" 2>/dev/null; then
+      STOPPED=1
+    fi
+
+    if [ $STOPPED -eq 1 ]; then
+      echo "✓ NexaDB stopped successfully"
+    else
+      echo "ℹ NexaDB is not running"
+    fi
+    ;;
   --version|-v)
     echo "NexaDB v#{version}"
     ;;
@@ -141,6 +178,7 @@ NexaDB - The database for quick apps
 
 Usage:
   nexadb start              Start all services (Binary + REST + Admin)
+  nexadb stop               Stop all NexaDB services
   nexadb admin              Start admin UI only (port 9999)
   nexadb reset-password     Reset root password to default
   nexadb --version          Show version
@@ -157,6 +195,7 @@ Commands:
 
 Examples:
   nexadb start                         # Start all services
+  nexadb stop                          # Stop all services
   nexadb admin                         # Start admin UI only
   nexadb reset-password                # Reset root password to default
   nexadb reset-password --password foo # Reset to custom password
@@ -237,7 +276,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v2.3.1#{cyan}                                          ║
+      ║                     #{green}v3.0.1#{cyan}                                          ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
