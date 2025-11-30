@@ -7,7 +7,7 @@ class Nexadb < Formula
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
   url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.5.tar.gz"
-  sha256 "53492550d2ecf13472489e34f4cacf6d458704661e3aa9d9af8fa1c38d36a65e"
+  sha256 "ce44046962ad0810605944a657e516b230425b2cbc781eec4c2ce9c711b293da"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -47,13 +47,19 @@ class Nexadb < Formula
     sha256 "75efc6cf31f9623143a35d78ab7e4ad52aeeabcf872b781f9505cc4b8405be6a"
   end
 
+  # hnswlib - Fast HNSW vector index (NEW v3.0.5 - required for vector operations)
+  resource "hnswlib" do
+    url "https://files.pythonhosted.org/packages/cf/7a/1a9b1405f2eb59515f06c3074750b03e0e96edf7fee0f6dd6df81d9c21d7/hnswlib-0.8.0.tar.gz"
+    sha256 "cb6d037eedebb34a7134e7dc78966441dfd04c9cf5ee93911be911ced951c44c"
+  end
+
   def install
     # Create virtualenv with access to Homebrew's numpy (pre-built, fast!)
     venv = virtualenv_create(libexec, "python3", system_site_packages: true)
 
     # Install Python dependencies
     ohai "Installing Python dependencies..."
-    puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, xxhash, bitarray, nexaclient"
+    puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, xxhash, bitarray, nexaclient, hnswlib"
     puts ""
 
     # Install dependencies individually with progress messages
