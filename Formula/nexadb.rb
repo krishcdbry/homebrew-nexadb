@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.1.tar.gz"
-  sha256 "84d867a5afa4356d7dfe68dede8d7c3f3805efd83391822dcde54bc648c1dbe8"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.2.tar.gz"
+  sha256 "4a91502262dba69f5517f71cd933719612c79389f3a7d7291141f7b945ec9e0d"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -70,6 +70,11 @@ class Nexadb < Formula
     # Install admin panel directory
     if buildpath.join("admin_panel").exist?
       libexec.install "admin_panel"
+    end
+
+    # Install nexadb-python client directory (CRITICAL: Required by nexadb_server.py)
+    if buildpath.join("nexadb-python").exist?
+      libexec.install "nexadb-python"
     end
 
     # Install password reset utility
@@ -276,7 +281,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v3.0.1#{cyan}                                          ║
+      ║                     #{green}v3.0.2#{cyan}                                          ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
