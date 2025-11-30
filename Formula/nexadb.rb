@@ -57,6 +57,10 @@ class Nexadb < Formula
     # Create virtualenv with access to Homebrew's numpy (pre-built, fast!)
     venv = virtualenv_create(libexec, "python3", system_site_packages: true)
 
+    # Ensure numpy is installed FIRST (required for hnswlib compilation)
+    ohai "Installing numpy first (required for hnswlib)..."
+    system libexec/"bin/pip", "install", "--no-cache-dir", "numpy"
+
     # Install Python dependencies
     ohai "Installing Python dependencies..."
     puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, xxhash, bitarray, nexaclient, hnswlib"
