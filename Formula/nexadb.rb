@@ -13,7 +13,7 @@ class Nexadb < Formula
 
   # Python 3.8+ required
   depends_on "python@3"
-  depends_on xcode: :build  # Required for hnswlib C++ compilation
+  # Note: hnswlib requires C++ compiler (Xcode command line tools)
 
   # Python dependencies
   resource "msgpack" do
