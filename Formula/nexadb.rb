@@ -225,9 +225,9 @@ esac
     # Detect architecture and download the appropriate binary
     arch = Hardware::CPU.arch
     nexa_url = if arch == :arm64
-      "https://github.com/krishcdbry/nexa-cli/releases/download/v3.0.0/nexa-aarch64-apple-darwin"
+      "https://github.com/krishcdbry/nexa-cli/releases/download/v3.0.4/nexa-aarch64-apple-darwin"
     else
-      "https://github.com/krishcdbry/nexa-cli/releases/download/v3.0.0/nexa-x86_64-apple-darwin"
+      "https://github.com/krishcdbry/nexa-cli/releases/download/v3.0.4/nexa-x86_64-apple-darwin"
     end
 
     # Download nexa binary
