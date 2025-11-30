@@ -13,9 +13,13 @@ class Nexadb < Formula
 
   # Python 3.8+ required
   depends_on "python@3"
-  # Note: hnswlib requires C++ compiler (Xcode command line tools)
 
   # Python dependencies
+  resource "numpy" do
+    url "https://files.pythonhosted.org/packages/76/65/21b3bc86aac7b8f2862db1e808f1ea22b028e30a225a34a5ede9bf8678f2/numpy-2.3.5.tar.gz"
+    sha256 "784db1dcdab56bf0517743e746dfb0f885fc68d948aba86eeec2cba234bdf1c0"
+  end
+
   resource "msgpack" do
     url "https://files.pythonhosted.org/packages/cb/d0/7555686ae7ff5731205df1012ede15dd9d927f6227ea151e901c7406af4f/msgpack-1.1.0.tar.gz"
     sha256 "dd432ccc2c72b914e4cb77afce64aab761c1137cc698be3984eee260bcb2896e"
@@ -57,13 +61,9 @@ class Nexadb < Formula
     # Create virtualenv
     venv = virtualenv_create(libexec, "python3")
 
-    # Install numpy first (pip automatically uses pre-built wheel - no compilation!)
-    ohai "Installing numpy (pre-built wheel)..."
-    system libexec/"bin/pip", "install", "numpy"
-
     # Install Python dependencies
     ohai "Installing Python dependencies..."
-    puts "📦 Installing #{resources.count} packages: msgpack, sortedcontainers, pybloom_live, xxhash, bitarray, nexaclient, hnswlib"
+    puts "📦 Installing #{resources.count} packages: numpy, msgpack, sortedcontainers, pybloom_live, xxhash, bitarray, nexaclient, hnswlib"
     puts ""
 
     # Install dependencies individually with progress messages
