@@ -14,6 +14,7 @@ class Nexadb < Formula
   # Python 3.8+ required
   depends_on "python@3"
   depends_on "numpy"  # Pre-built bottle, fast install (required by pybloom_live)
+  depends_on xcode: :build  # Required for hnswlib C++ compilation
 
   # Python dependencies
   resource "msgpack" do
@@ -54,12 +55,12 @@ class Nexadb < Formula
   end
 
   def install
-    # Create virtualenv with access to Homebrew's numpy (pre-built, fast!)
+    # Create virtualenv with access to Homebrew's numpy (pre-built bottle, no compilation needed!)
+    # The depends_on "numpy" ensures numpy is available via system_site_packages
     venv = virtualenv_create(libexec, "python3", system_site_packages: true)
 
-    # Ensure numpy is installed FIRST (required for hnswlib compilation)
-    ohai "Installing numpy first (required for hnswlib)..."
-    system libexec/"bin/pip", "install", "--no-cache-dir", "numpy"
+    # Verify numpy is available from Homebrew (no pip install needed - uses pre-built bottle)
+    ohai "Using Homebrew's pre-built numpy (no compilation required)..."
 
     # Install Python dependencies
     ohai "Installing Python dependencies..."
@@ -333,6 +334,10 @@ esac
          #{cyan}$ source ~/.zshrc#{reset}  (or ~/.bash_profile)
 
          #{white}Or simply open a new terminal window.#{reset}
+
+         #{white}If installation fails with Xcode errors:#{reset}
+         #{cyan}$ xcode-select --install#{reset}  (install command line tools)
+         #{white}Or update Xcode from the App Store#{reset}
 
       #{yellow}#{bold}🔗 RESOURCES#{reset}
          #{white}Documentation:#{reset} #{cyan}https://github.com/krishcdbry/nexadb#{reset}
