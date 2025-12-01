@@ -6,8 +6,8 @@ class Nexadb < Formula
 
   desc "Next-gen AI database with vector search, TOON format, and unified architecture"
   homepage "https://github.com/krishcdbry/nexadb"
-  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.5.tar.gz"
-  sha256 "9abfc814e560f398a074ffb59826a87f4b09814e68afd4d7a6933fb83ec3a73a"
+  url "https://github.com/krishcdbry/nexadb/archive/refs/tags/v3.0.6.tar.gz"
+  sha256 "da24abec52e58923908990f3023c13752dc6a14671ef73bb26db96c201eefe8b"
   license "MIT"
   head "https://github.com/krishcdbry/nexadb.git", branch: "main"
 
@@ -292,7 +292,7 @@ esac
       ║     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚═════╝               ║
       ║                                                                       ║
       ║            #{white}Database for AI Developers#{cyan}                             ║
-      ║                     #{green}v3.0.5#{cyan}                                          ║
+      ║                     #{green}v3.0.6#{cyan}                                          ║
       ║                                                                       ║
       ╚═══════════════════════════════════════════════════════════════════════╝
       #{reset}
